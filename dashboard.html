@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</head>
+
+<body>
+
+<h1>Real-Time Flux Showcase</h1>
+
+<div id="co2plot"></div>
+
+<script>
+
+fetch('data/FluxData.csv')
+.then(response => response.text())
+.then(data => {
+
+let rows = data.split('\n');
+
+let time = [];
+let flux = [];
+
+for(let i=1;i<rows.length;i++){
+
+    let cols = rows[i].split(',');
+
+    time.push(cols[0]);
+    flux.push(Number(cols[1]));
+
+}
+
+Plotly.newPlot('co2plot',[{
+
+x: time,
+y: flux,
+mode:'lines'
+
+}]);
+
+});
+
+</script>
+
+</body>
+</html>
