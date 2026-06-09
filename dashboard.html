@@ -1,7 +1,12 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
+
+<title>Munich Urban Flux Observatory</title>
+
+<link rel="stylesheet" href="css/style.css">
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
@@ -9,41 +14,104 @@
 
 <body>
 
-<h1>Real-Time Flux Showcase</h1>
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="dashboard.html">Data Dashboard</a>
+
+</nav>
+
+<h1>Real-Time Eddy Covariance Monitoring</h1>
+
+<p>
+Latest 48 hours of EC measurements
+</p>
 
 <div id="co2plot"></div>
 
+<div id="hplot"></div>
+
+<div id="leplot"></div>
+
 <script>
 
-fetch('data/FluxData.csv')
+fetch('~/Desktop/mnt/mnt_code/dashboard/data/FluxDashboard.csv')
+
 .then(response => response.text())
+
 .then(data => {
 
-let rows = data.split('\n');
+let rows = data.trim().split('\n');
 
 let time = [];
-let flux = [];
+
+let co2 = [];
+
+let H = [];
+
+let LE = [];
 
 for(let i=1;i<rows.length;i++){
 
     let cols = rows[i].split(',');
 
     time.push(cols[0]);
-    flux.push(Number(cols[1]));
+
+    co2.push(Number(cols[1]));
+
+    H.push(Number(cols[2]));
+
+    LE.push(Number(cols[3]));
 
 }
 
-Plotly.newPlot('co2plot',[{
+Plotly.newPlot(
+    'co2plot',
+    [{
+        x: time,
+        y: co2,
+        mode: 'lines'
+    }],
+    {
+        title:'CO₂ Flux (µmol m⁻² s⁻¹)',
+        xaxis:{title:'Time'},
+        yaxis:{title:'CO₂ Flux'}
+    }
+);
 
-x: time,
-y: flux,
-mode:'lines'
+Plotly.newPlot(
+    'hplot',
+    [{
+        x: time,
+        y: H,
+        mode: 'lines'
+    }],
+    {
+        title:'Sensible Heat Flux (W m⁻²)',
+        xaxis:{title:'Time'},
+        yaxis:{title:'H'}
+    }
+);
 
-}]);
+Plotly.newPlot(
+    'leplot',
+    [{
+        x: time,
+        y: LE,
+        mode: 'lines'
+    }],
+    {
+        title:'Latent Heat Flux (W m⁻²)',
+        xaxis:{title:'Time'},
+        yaxis:{title:'LE'}
+    }
+);
 
 });
 
 </script>
 
 </body>
+
 </html>
