@@ -1,169 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-
-<meta charset="utf-8">
-
-<title>Real-Time Eddy Covariance Monitoring</title>
-
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-<style>
-
-body{
-    font-family: Arial, sans-serif;
-    margin:20px;
-    background:#f4f4f4;
-}
-
-h1{
-    text-align:center;
-}
-
-.card{
-    background:white;
-    padding:15px;
-    margin-bottom:20px;
-    border-radius:8px;
-    box-shadow:0px 0px 5px rgba(0,0,0,0.1);
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-}
-
-.plot{
-    height:400px;
-    background:white;
-    border-radius:8px;
-}
-
-@media(max-width:1000px){
-    .grid{
-        grid-template-columns:1fr;
-    }
-}
-
-</style>
-
-</head>
-
-<body>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Data Dashboard</a>
+</nav>
 
 <h1>Munich Urban Flux Observatory</h1>
 
+<p class="subtitle">
+30-minute eddy covariance measurements automatically processed from 20-Hz observations
+</p>
 
-<div class="grid">
+<div class="dashboard-grid">
 
-<div id="co2plot" class="plot"></div>
+    <div id="co2plot" class="plot-panel"></div>
 
-<div id="hplot" class="plot"></div>
+    <div id="hplot" class="plot-panel"></div>
 
-<div id="leplot" class="plot"></div>
+    <div id="leplot" class="plot-panel"></div>
 
-<div id="wsplot" class="plot"></div>
+    <div id="wsplot" class="plot-panel"></div>
 
-<div id="wdplot" class="plot"></div>
+    <div id="wdplot" class="plot-panel"></div>
 
-<div id="taplot" class="plot"></div>
+    <div id="taplot" class="plot-panel"></div>
 
 </div>
-
-<script>
-
-fetch("data/FluxDashboard.csv")
-.then(response => response.text())
-.then(text => {
-
-    let rows = text.trim().split("\n");
-
-    let time = [];
-    let co2 = [];
-    let H = [];
-    let LE = [];
-    let ws = [];
-    let wd = [];
-    let Ta = [];
-
-    for(let i=1;i<rows.length;i++){
-
-        let c = rows[i].split(",");
-
-        time.push(c[0]);
-        co2.push(parseFloat(c[1]));
-        H.push(parseFloat(c[2]));
-        LE.push(parseFloat(c[3]));
-        ws.push(parseFloat(c[4]));
-        wd.push(parseFloat(c[5]));
-        Ta.push(parseFloat(c[6]));
-
-    }
-
-    Plotly.newPlot("co2plot",
-    [{
-        x:time,
-        y:co2,
-        mode:"lines"
-    }],
-    {
-        title:"CO₂ Flux (μmol m⁻² s⁻¹)"
-    });
-
-    Plotly.newPlot("hplot",
-    [{
-        x:time,
-        y:H,
-        mode:"lines"
-    }],
-    {
-        title:"Sensible Heat Flux H (W m⁻²)"
-    });
-
-    Plotly.newPlot("leplot",
-    [{
-        x:time,
-        y:LE,
-        mode:"lines"
-    }],
-    {
-        title:"Latent Heat Flux LE (W m⁻²)"
-    });
-
-    Plotly.newPlot("wsplot",
-    [{
-        x:time,
-        y:ws,
-        mode:"lines"
-    }],
-    {
-        title:"Wind Speed (m s⁻¹)"
-    });
-
-    Plotly.newPlot("wdplot",
-    [{
-        x:time,
-        y:wd,
-        mode:"lines"
-    }],
-    {
-        title:"Wind Direction (°)"
-    });
-
-    Plotly.newPlot("taplot",
-    [{
-        x:time,
-        y:Ta,
-        mode:"lines"
-    }],
-    {
-        title:"Air Temperature (°C)"
-    });
-
-});
-
-</script>
-
-</body>
-</html>
