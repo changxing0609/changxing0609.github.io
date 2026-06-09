@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
 
 <meta charset="utf-8">
 
-<title>Real-Time Eddy Covariance Monitoring</title>
+<title>Real-Time Eddy Covariance Measurements</title>
 
 <link rel="stylesheet" href="css/style.css">
 
@@ -17,11 +16,8 @@
 <body>
 
 <nav>
-
-<a href="index.html">Home</a>
-
-<a href="dashboard.html">Data Dashboard</a>
-
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Data Dashboard</a>
 </nav>
 
 <h1>Real-Time Eddy Covariance Measurements</h1>
@@ -83,6 +79,7 @@ fetch("data/FluxDashboard.csv")
         wd.push(parseFloat(c[5]));
 
         Ta.push(parseFloat(c[6]));
+
     }
 
     Plotly.newPlot(
@@ -95,7 +92,8 @@ fetch("data/FluxDashboard.csv")
         }],
         {
             title: "CO₂ Flux (μmol m⁻² s⁻¹)",
-            margin: {t:40}
+            xaxis: {title: "Time"},
+            yaxis: {title: "CO₂ Flux"}
         }
     );
 
@@ -109,7 +107,8 @@ fetch("data/FluxDashboard.csv")
         }],
         {
             title: "Sensible Heat Flux H (W m⁻²)",
-            margin: {t:40}
+            xaxis: {title: "Time"},
+            yaxis: {title: "H"}
         }
     );
 
@@ -123,7 +122,8 @@ fetch("data/FluxDashboard.csv")
         }],
         {
             title: "Latent Heat Flux LE (W m⁻²)",
-            margin: {t:40}
+            xaxis: {title: "Time"},
+            yaxis: {title: "LE"}
         }
     );
 
@@ -137,7 +137,8 @@ fetch("data/FluxDashboard.csv")
         }],
         {
             title: "Wind Speed (m s⁻¹)",
-            margin: {t:40}
+            xaxis: {title: "Time"},
+            yaxis: {title: "Wind Speed"}
         }
     );
 
@@ -151,7 +152,8 @@ fetch("data/FluxDashboard.csv")
         }],
         {
             title: "Wind Direction (°)",
-            margin: {t:40}
+            xaxis: {title: "Time"},
+            yaxis: {title: "Direction"}
         }
     );
 
@@ -161,11 +163,12 @@ fetch("data/FluxDashboard.csv")
             x: time,
             y: Ta,
             mode: "lines",
-            name: "Air Temperature"
+            name: "Temperature"
         }],
         {
             title: "Air Temperature (°C)",
-            margin: {t:40}
+            xaxis: {title: "Time"},
+            yaxis: {title: "Temperature"}
         }
     );
 
