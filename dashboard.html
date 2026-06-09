@@ -1,9 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>Real-Time Eddy Covariance Monitoring</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+</head>
+
+<body>
+
 <nav>
-    <a href="index.html">Home</a>
-    <a href="dashboard.html">Data Dashboard</a>
+
+<a href="index.html">Home</a>
+
+<a href="dashboard.html">Data Dashboard</a>
+
 </nav>
 
-<h1>Munich Urban Flux Observatory</h1>
+<h1>Real-Time Eddy Covariance Measurements</h1>
 
 <p class="subtitle">
 30-minute eddy covariance measurements automatically processed from 20-Hz observations
@@ -24,3 +45,143 @@
     <div id="taplot" class="plot-panel"></div>
 
 </div>
+
+<script>
+
+fetch("data/FluxDashboard.csv")
+
+.then(response => response.text())
+
+.then(text => {
+
+    let rows = text.trim().split("\n");
+
+    let time = [];
+    let co2 = [];
+    let H = [];
+    let LE = [];
+    let ws = [];
+    let wd = [];
+    let Ta = [];
+
+    for(let i=1;i<rows.length;i++){
+
+        let c = rows[i].trim().split(",");
+
+        if(c.length < 7) continue;
+
+        time.push(c[0]);
+
+        co2.push(parseFloat(c[1]));
+
+        H.push(parseFloat(c[2]));
+
+        LE.push(parseFloat(c[3]));
+
+        ws.push(parseFloat(c[4]));
+
+        wd.push(parseFloat(c[5]));
+
+        Ta.push(parseFloat(c[6]));
+    }
+
+    Plotly.newPlot(
+        "co2plot",
+        [{
+            x: time,
+            y: co2,
+            mode: "lines",
+            name: "CO₂ Flux"
+        }],
+        {
+            title: "CO₂ Flux (μmol m⁻² s⁻¹)",
+            margin: {t:40}
+        }
+    );
+
+    Plotly.newPlot(
+        "hplot",
+        [{
+            x: time,
+            y: H,
+            mode: "lines",
+            name: "H"
+        }],
+        {
+            title: "Sensible Heat Flux H (W m⁻²)",
+            margin: {t:40}
+        }
+    );
+
+    Plotly.newPlot(
+        "leplot",
+        [{
+            x: time,
+            y: LE,
+            mode: "lines",
+            name: "LE"
+        }],
+        {
+            title: "Latent Heat Flux LE (W m⁻²)",
+            margin: {t:40}
+        }
+    );
+
+    Plotly.newPlot(
+        "wsplot",
+        [{
+            x: time,
+            y: ws,
+            mode: "lines",
+            name: "Wind Speed"
+        }],
+        {
+            title: "Wind Speed (m s⁻¹)",
+            margin: {t:40}
+        }
+    );
+
+    Plotly.newPlot(
+        "wdplot",
+        [{
+            x: time,
+            y: wd,
+            mode: "lines",
+            name: "Wind Direction"
+        }],
+        {
+            title: "Wind Direction (°)",
+            margin: {t:40}
+        }
+    );
+
+    Plotly.newPlot(
+        "taplot",
+        [{
+            x: time,
+            y: Ta,
+            mode: "lines",
+            name: "Air Temperature"
+        }],
+        {
+            title: "Air Temperature (°C)",
+            margin: {t:40}
+        }
+    );
+
+})
+
+.catch(error => {
+
+    console.error(error);
+
+    document.body.innerHTML +=
+    "<h2 style='color:red;'>Failed to load FluxDashboard.csv</h2>";
+
+});
+
+</script>
+
+</body>
+
+</html>
