@@ -54,13 +54,6 @@ h1{
 
 <h1>Munich Urban Flux Observatory</h1>
 
-<div class="card">
-
-<h2>Latest Conditions</h2>
-
-<div id="latest"></div>
-
-</div>
 
 <div class="grid">
 
@@ -107,17 +100,6 @@ fetch("data/FluxDashboard.csv")
         Ta.push(parseFloat(c[6]));
 
     }
-
-    let n = time.length-1;
-
-    document.getElementById("latest").innerHTML =
-        "<b>Time:</b> "+time[n]+"<br>"+
-        "<b>CO₂ Flux:</b> "+co2[n].toFixed(2)+" μmol m⁻² s⁻¹<br>"+
-        "<b>H:</b> "+H[n].toFixed(1)+" W m⁻²<br>"+
-        "<b>LE:</b> "+LE[n].toFixed(1)+" W m⁻²<br>"+
-        "<b>Wind Speed:</b> "+ws[n].toFixed(2)+" m s⁻¹<br>"+
-        "<b>Wind Direction:</b> "+wd[n].toFixed(0)+"°<br>"+
-        "<b>Air Temperature:</b> "+Ta[n].toFixed(2)+" °C";
 
     Plotly.newPlot("co2plot",
     [{
